@@ -1513,6 +1513,589 @@ figcaption {
     js: ''
   },
 
+  {
+    id: 'product-card',
+    title: 'Product card',
+    category: 'Cards',
+    description: 'An ecommerce product card with wishlist toggle, size options that update the price, rating and an add-to-bag confirmation.',
+    height: 520,
+    html: `<article class="product-card" id="product-card">
+  <div class="product-media">
+    <span class="product-badge">Best seller</span>
+
+    <button class="wish" id="wish" type="button" aria-label="Save Iced Americano to wishlist" aria-pressed="false">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20.8 5.6a5.4 5.4 0 0 0-7.6 0L12 6.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 22l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"></path>
+      </svg>
+    </button>
+
+    <img class="product-art" src="assets/Ice-Americano.jpg" alt="Iced Americano in a clear cup with ice">
+  </div>
+
+  <div class="product-body">
+    <h3><a href="#">Iced Americano</a></h3>
+
+    <div class="rating">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="#b77900" aria-hidden="true">
+        <path d="m12 2.5 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3-5.8 3 1.1-6.5L2.6 9.3l6.5-.9Z"></path>
+      </svg>
+      <span>4.8</span>
+      <span class="rating-count">(126 reviews)</span>
+    </div>
+
+    <p class="price"><strong id="product-price" aria-live="polite">$4.50</strong></p>
+
+    <fieldset class="sizes">
+      <legend>Size: <span id="size-name">12 oz</span></legend>
+      <div class="size-options">
+        <label class="size-option">
+          <input type="radio" name="drink-size" value="12 oz" data-price="4.50" aria-label="12 ounces" checked>
+          <span>12 oz</span>
+        </label>
+        <label class="size-option">
+          <input type="radio" name="drink-size" value="16 oz" data-price="5.25" aria-label="16 ounces">
+          <span>16 oz</span>
+        </label>
+        <label class="size-option">
+          <input type="radio" name="drink-size" value="20 oz" data-price="6.00" aria-label="20 ounces">
+          <span>20 oz</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <button class="add" id="add" type="button">Add to bag</button>
+    <p class="product-status" id="product-status" role="status"></p>
+  </div>
+</article>`,
+    css: `.product-card {
+  width: min(300px, 100%);
+  overflow: hidden;
+  border: 1px solid #d3dbe6;
+  border-radius: 16px;
+  background: #fff;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.product-card:hover { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(20, 35, 59, 0.12); }
+
+.product-media {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 210px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fbf8f4, #efe5d8);
+}
+
+/* The photo has a white studio background; multiply blends it into the warm stage. */
+.product-art {
+  display: block;
+  width: 210px;
+  height: 210px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  transition: transform 0.25s;
+}
+.product-card:hover .product-art { transform: translateY(-4px) scale(1.02); }
+
+.product-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #ffc93c;
+  color: #14233b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.wish {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid #d3dbe6;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: #14233b;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.wish:hover { border-color: #b3261e; color: #b3261e; }
+.wish[aria-pressed="true"] { border-color: #b3261e; color: #b3261e; }
+.wish[aria-pressed="true"] svg { fill: currentColor; }
+.wish:focus-visible { outline: 3px solid #0a7a75; outline-offset: 2px; }
+
+.product-body { padding: 20px; }
+.product-card h3 { margin: 0; font-size: 19px; line-height: 1.25; letter-spacing: -0.01em; }
+.product-card h3 a { color: #14233b; text-decoration: none; }
+.product-card h3 a:hover { color: #0a7a75; text-decoration: underline; text-underline-offset: 3px; }
+.product-card h3 a:focus-visible { border-radius: 4px; outline: 3px solid #0a7a75; outline-offset: 2px; }
+
+.rating { display: flex; align-items: center; gap: 5px; margin-top: 8px; color: #55657c; font-size: 13px; }
+.rating svg { flex-shrink: 0; }
+.rating span:first-of-type { color: #14233b; font-weight: 600; }
+.rating-count { color: #55657c; }
+
+.price { margin: 10px 0 0; }
+.price strong { font-size: 22px; letter-spacing: -0.01em; }
+
+.sizes { display: grid; gap: 8px; margin: 14px 0 0; padding: 0; border: 0; }
+.sizes legend { padding: 0; color: #55657c; font-size: 12px; }
+.size-options { display: flex; flex-wrap: wrap; gap: 6px; }
+.size-option { position: relative; display: inline-flex; cursor: pointer; }
+.size-option input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.size-option span {
+  display: block;
+  padding: 6px 11px;
+  border: 1px solid #d3dbe6;
+  border-radius: 8px;
+  background: #fff;
+  color: #14233b;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.size-option:hover span { border-color: #0a7a75; }
+.size-option input:checked + span { border-color: #0a7a75; background: #0a7a75; color: #fff; }
+.size-option input:focus-visible + span { outline: 3px solid #0a7a75; outline-offset: 2px; }
+
+.add {
+  width: 100%;
+  margin-top: 16px;
+  padding: 11px;
+  border: 0;
+  border-radius: 9px;
+  background: #0a7a75;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.add:hover { background: #07605c; }
+.add:active { transform: translateY(1px); }
+.add:focus-visible { outline: 3px solid #0a7a75; outline-offset: 2px; }
+.add.is-added { background: #07605c; }
+
+.product-status { min-height: 18px; margin: 8px 0 0; color: #07605c; font-size: 12px; font-weight: 600; }
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card,
+  .product-art,
+  .wish,
+  .add { transition: none; }
+  .product-card:hover,
+  .product-card:hover .product-art { transform: none; }
+}`,
+    js: `const wish = document.getElementById('wish');
+const add = document.getElementById('add');
+const status = document.getElementById('product-status');
+const price = document.getElementById('product-price');
+const sizeName = document.getElementById('size-name');
+const sizes = Array.from(document.querySelectorAll('input[name="drink-size"]'));
+let addTimer;
+
+wish.addEventListener('click', () => {
+  const saved = wish.getAttribute('aria-pressed') === 'true';
+  wish.setAttribute('aria-pressed', String(!saved));
+  status.textContent = saved ? 'Removed from wishlist.' : 'Saved to wishlist.';
+});
+
+sizes.forEach((input) => {
+  input.addEventListener('change', () => {
+    sizeName.textContent = input.value;
+    price.textContent = '$' + input.dataset.price;
+  });
+});
+
+add.addEventListener('click', () => {
+  clearTimeout(addTimer);
+  add.textContent = 'Added to bag';
+  add.classList.add('is-added');
+  status.textContent = 'Iced Americano added to your bag.';
+  addTimer = setTimeout(() => {
+    add.textContent = 'Add to bag';
+    add.classList.remove('is-added');
+  }, 1800);
+});`
+  },
+
+  {
+    id: 'sale-product-card',
+    title: 'Sale product card',
+    category: 'Cards',
+    description: 'A compact ecommerce card with a discount badge, low-stock label, crossed-out price and a quick add-to-bag action.',
+    height: 260,
+    html: `<article class="deal-card">
+  <div class="deal-media">
+    <span class="deal-badge">-25%</span>
+
+    <svg class="deal-art" viewBox="0 0 120 160" role="img" aria-label="Insulated trail bottle">
+      <rect x="44" y="14" width="32" height="18" rx="6" fill="#14233b"></rect>
+      <path d="M40 36h40l5 12v84a14 14 0 0 1-14 14H49a14 14 0 0 1-14-14V48Z" fill="#0a7a75"></path>
+      <path d="M40 36h40l5 12H35Z" fill="#07605c"></path>
+      <rect x="45" y="64" width="30" height="44" rx="4" fill="#fff" opacity="0.9"></rect>
+      <path d="M52 78h16M52 86h16M52 94h10" stroke="#0a7a75" stroke-width="3" stroke-linecap="round"></path>
+      <circle cx="60" cy="120" r="3" fill="#fff" opacity="0.55"></circle>
+    </svg>
+  </div>
+
+  <div class="deal-body">
+    <span class="deal-stock">Low stock</span>
+    <h3><a href="#">Trail Bottle 750ml</a></h3>
+
+    <div class="deal-rating">
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="#b77900" aria-hidden="true">
+        <path d="m12 2.5 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3-5.8 3 1.1-6.5L2.6 9.3l6.5-.9Z"></path>
+      </svg>
+      <span>4.6</span>
+      <span class="deal-reviews">(89)</span>
+    </div>
+
+    <p class="deal-price"><strong>$24</strong> <del>$32</del></p>
+    <button class="deal-add" id="deal-add" type="button">Add to bag</button>
+    <p class="deal-status" id="deal-status" role="status"></p>
+  </div>
+</article>`,
+    css: `.deal-card {
+  display: grid;
+  grid-template-columns: 126px minmax(0, 1fr);
+  width: min(400px, 100%);
+  overflow: hidden;
+  border: 1px solid #d3dbe6;
+  border-radius: 16px;
+  background: #fff;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.deal-card:hover { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(20, 35, 59, 0.12); }
+
+.deal-media {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: linear-gradient(160deg, #fff5dc, #fde7b0);
+}
+
+.deal-art { width: 82px; height: auto; transition: transform 0.25s; }
+.deal-card:hover .deal-art { transform: translateY(-3px) scale(1.03); }
+
+.deal-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #b3261e;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.deal-body { padding: 18px; }
+.deal-stock {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #fff5dc;
+  color: #8a5b00;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.deal-card h3 { margin: 8px 0 0; font-size: 17px; line-height: 1.3; }
+.deal-card h3 a { color: #14233b; text-decoration: none; }
+.deal-card h3 a:hover { color: #0a7a75; text-decoration: underline; text-underline-offset: 3px; }
+.deal-card h3 a:focus-visible { border-radius: 4px; outline: 3px solid #0a7a75; outline-offset: 2px; }
+
+.deal-rating { display: flex; align-items: center; gap: 4px; margin-top: 6px; color: #55657c; font-size: 12px; }
+.deal-rating span:first-of-type { color: #14233b; font-weight: 600; }
+
+.deal-price { display: flex; align-items: baseline; gap: 6px; margin: 8px 0 0; }
+.deal-price strong { font-size: 20px; }
+.deal-price del { color: #55657c; font-size: 13px; }
+
+.deal-add {
+  width: 100%;
+  margin-top: 12px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #0a7a75;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.deal-add:hover { background: #07605c; }
+.deal-add:active { transform: translateY(1px); }
+.deal-add:focus-visible { outline: 3px solid #0a7a75; outline-offset: 2px; }
+.deal-add.is-added { background: #07605c; }
+
+.deal-status { min-height: 18px; margin: 6px 0 0; color: #07605c; font-size: 12px; font-weight: 600; }
+
+@media (max-width: 360px) {
+  .deal-card { grid-template-columns: 108px minmax(0, 1fr); }
+  .deal-body { padding: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deal-card,
+  .deal-art,
+  .deal-add { transition: none; }
+  .deal-card:hover,
+  .deal-card:hover .deal-art { transform: none; }
+}`,
+    js: `const dealAdd = document.getElementById('deal-add');
+const dealStatus = document.getElementById('deal-status');
+let dealTimer;
+
+dealAdd.addEventListener('click', () => {
+  clearTimeout(dealTimer);
+  dealAdd.textContent = 'Added to bag';
+  dealAdd.classList.add('is-added');
+  dealStatus.textContent = 'Trail Bottle added to your bag.';
+  dealTimer = setTimeout(() => {
+    dealAdd.textContent = 'Add to bag';
+    dealAdd.classList.remove('is-added');
+  }, 1800);
+});`
+  },
+
+  {
+    id: 'cart-line-item',
+    title: 'Cart line item',
+    category: 'Cards',
+    description: 'A cart row with a quantity stepper, live line total, remove action and an undo state.',
+    height: 240,
+    html: `<div class="cart-demo">
+  <article class="cart-item" id="cart-item">
+    <div class="cart-media">
+      <svg viewBox="0 0 120 140" role="img" aria-label="Natural canvas tote bag">
+        <path d="M28 42h64l8 84H20Z" fill="#e8dcc8" stroke="#14233b" stroke-width="4" stroke-linejoin="round"></path>
+        <path d="M44 42V30a16 16 0 0 1 32 0v12" fill="none" stroke="#14233b" stroke-width="6" stroke-linecap="round"></path>
+        <rect x="42" y="70" width="36" height="24" rx="4" fill="#fff" opacity="0.7"></rect>
+        <path d="M50 82h20" stroke="#0a7a75" stroke-width="4" stroke-linecap="round"></path>
+      </svg>
+    </div>
+
+    <div class="cart-body">
+      <div class="cart-top">
+        <div>
+          <h3><a href="#">Canvas Tote Bag</a></h3>
+          <p class="cart-variant">Natural / One size</p>
+        </div>
+        <button class="cart-remove" id="cart-remove" type="button" aria-label="Remove Canvas Tote Bag from bag">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 7h16M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M6 7l1 13h10l1-13"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="cart-bottom">
+        <div class="qty" role="group" aria-label="Quantity">
+          <button class="qty-btn" id="qty-minus" type="button" aria-label="Decrease quantity">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M3 8h10"></path>
+            </svg>
+          </button>
+          <span class="qty-value" id="qty-value" aria-live="polite">1</span>
+          <button class="qty-btn" id="qty-plus" type="button" aria-label="Increase quantity">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M8 3v10M3 8h10"></path>
+            </svg>
+          </button>
+        </div>
+
+        <p class="cart-price"><strong id="line-total">$28.00</strong><span>$28 each</span></p>
+      </div>
+    </div>
+  </article>
+
+  <div class="cart-empty" id="cart-empty" hidden>
+    <p id="cart-status" role="status">Canvas Tote Bag removed from your bag.</p>
+    <button class="cart-undo" id="cart-undo" type="button">Undo</button>
+  </div>
+</div>`,
+    css: `.cart-demo { display: grid; justify-items: center; gap: 12px; width: 100%; }
+
+.cart-item {
+  display: flex;
+  gap: 14px;
+  width: min(420px, 100%);
+  padding: 14px;
+  border: 1px solid #d3dbe6;
+  border-radius: 14px;
+  background: #fff;
+}
+.cart-item[hidden],
+.cart-empty[hidden] { display: none; }
+
+.cart-media {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 92px;
+  height: 92px;
+  border-radius: 12px;
+  background: #f7f9fb;
+}
+.cart-media svg { width: 72px; height: auto; }
+
+.cart-body { flex: 1; min-width: 0; }
+.cart-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.cart-top h3 { margin: 0; font-size: 16px; line-height: 1.3; }
+.cart-top h3 a { color: #14233b; text-decoration: none; }
+.cart-top h3 a:hover { color: #0a7a75; text-decoration: underline; text-underline-offset: 3px; }
+.cart-top h3 a:focus-visible { border-radius: 4px; outline: 3px solid #0a7a75; outline-offset: 2px; }
+
+.cart-variant { margin: 3px 0 0; color: #55657c; font-size: 12px; }
+
+.cart-remove {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #55657c;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.cart-remove:hover { background: #fdeceb; color: #b3261e; }
+.cart-remove:focus-visible { outline: 3px solid #0a7a75; outline-offset: 2px; }
+
+.cart-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.qty {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #d3dbe6;
+  border-radius: 9px;
+  background: #fff;
+}
+.qty-btn {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #14233b;
+  cursor: pointer;
+}
+.qty-btn:hover:not(:disabled) { background: #edf1f5; }
+.qty-btn:disabled { color: #a9b6c7; cursor: not-allowed; }
+.qty-btn:focus-visible { outline: 2px solid #0a7a75; outline-offset: -2px; }
+
+.qty-value {
+  min-width: 28px;
+  color: #14233b;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.cart-price { display: grid; gap: 1px; margin: 0; text-align: right; }
+.cart-price strong { font-size: 16px; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.cart-price span { color: #55657c; font-size: 12px; }
+
+.cart-empty {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  width: min(420px, 100%);
+  padding: 22px;
+  border: 1.5px dashed #d3dbe6;
+  border-radius: 14px;
+  text-align: center;
+}
+.cart-empty p { margin: 0; color: #55657c; font-size: 14px; }
+
+.cart-undo {
+  padding: 8px 14px;
+  border: 1.5px solid #0a7a75;
+  border-radius: 999px;
+  background: #fff;
+  color: #0a7a75;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cart-undo:hover { background: #ecfdf5; }
+.cart-undo:focus-visible { outline: 3px solid #0a7a75; outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-remove,
+  .cart-undo { transition: none; }
+}`,
+    js: `const item = document.getElementById('cart-item');
+const empty = document.getElementById('cart-empty');
+const remove = document.getElementById('cart-remove');
+const undo = document.getElementById('cart-undo');
+const minus = document.getElementById('qty-minus');
+const plus = document.getElementById('qty-plus');
+const qtyValue = document.getElementById('qty-value');
+const total = document.getElementById('line-total');
+const unit = 28;
+let qty = 1;
+
+function renderQty() {
+  qtyValue.textContent = String(qty);
+  total.textContent = '$' + (qty * unit).toFixed(2);
+  minus.disabled = qty === 1;
+  plus.disabled = qty === 9;
+}
+
+minus.addEventListener('click', () => {
+  if (qty > 1) {
+    qty--;
+    renderQty();
+  }
+});
+
+plus.addEventListener('click', () => {
+  if (qty < 9) {
+    qty++;
+    renderQty();
+  }
+});
+
+remove.addEventListener('click', () => {
+  item.hidden = true;
+  empty.hidden = false;
+  undo.focus();
+});
+
+undo.addEventListener('click', () => {
+  empty.hidden = true;
+  item.hidden = false;
+  remove.focus();
+});
+
+renderQty();`
+  },
+
   /* ----------------------------- Navigation ---------------------------- */
   {
     id: 'responsive-navbar',
@@ -1684,6 +2267,801 @@ function go(page) {
 prev.addEventListener('click', () => go(current - 1));
 next.addEventListener('click', () => go(current + 1));
 go(1);`
+  },
+
+  {
+    id: 'breadcrumbs',
+    title: 'Breadcrumbs',
+    category: 'Navigation',
+    description: 'A breadcrumb trail with a home icon, linked parent pages and a clearly marked current page.',
+    height: 130,
+    html: `<nav class="crumbs" aria-label="Breadcrumb">
+  <ol>
+    <li>
+      <a class="crumb-home" href="#" aria-label="Home">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"></path>
+        </svg>
+      </a>
+    </li>
+    <li><a href="#">Shop</a></li>
+    <li><a href="#">Coffee</a></li>
+    <li><a href="#" aria-current="page">Iced Americano</a></li>
+  </ol>
+</nav>`,
+    css: `.crumbs { display: flex; justify-content: center; }
+
+.crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.crumbs li { display: flex; align-items: center; gap: 4px; min-width: 0; }
+
+.crumbs li + li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-top: 1.5px solid #8d9bb0;
+  border-right: 1.5px solid #8d9bb0;
+  transform: rotate(45deg);
+}
+
+.crumbs a {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: #55657c;
+  font-size: 14px;
+  text-decoration: none;
+}
+.crumbs a:hover { background: #edf1f5; color: #14233b; }
+.crumbs a[aria-current="page"] { color: #14233b; font-weight: 600; }
+.crumbs a:focus-visible { outline: 3px solid #0a7a75; outline-offset: 2px; }
+
+.crumbs .crumb-home { padding: 6px; }`
+  },
+
+  {
+    id: 'section-nav',
+    title: 'Section nav with scrollspy',
+    category: 'Navigation',
+    description: 'A page section menu that scrolls the content and keeps the active link in sync as you read.',
+    height: 400,
+    html: `<div class="section-nav">
+  <nav class="toc" aria-label="On this page">
+    <p class="toc-title">On this page</p>
+    <a href="#origin" class="is-active" aria-current="true">Origin</a>
+    <a href="#roast">Roast</a>
+    <a href="#brew">Brew</a>
+    <a href="#notes">Tasting notes</a>
+  </nav>
+
+  <div class="section-scroll" id="section-scroll" tabindex="0" role="region" aria-label="Coffee guide">
+    <section id="origin">
+      <h3>Origin</h3>
+      <p>Grown in the highlands of Huila, Colombia, where cool nights and steady rain slow the cherry ripening.</p>
+      <p>Each lot is picked by hand, then washed and dried on raised beds before it travels north.</p>
+    </section>
+    <section id="roast">
+      <h3>Roast</h3>
+      <p>A medium roast that keeps the fruit in front without tipping into smoke. We stop the drum just after first crack.</p>
+      <p>The result is a cup with enough body for milk and enough acidity to stay interesting black.</p>
+    </section>
+    <section id="brew">
+      <h3>Brew</h3>
+      <p>Use 18 grams of coffee to 300 grams of water at 94°C. Bloom for 40 seconds, then pour in two slow circles.</p>
+      <p>Aim for a total brew time between 2:30 and 3:00. Grind medium-fine, like table salt.</p>
+    </section>
+    <section id="notes">
+      <h3>Tasting notes</h3>
+      <p>Red apple, cocoa nib and a clean finish. The iced version leans brighter, with a little more citrus.</p>
+      <p>Best within six weeks of roast. Store the bag sealed, away from light and heat.</p>
+    </section>
+  </div>
+</div>`,
+    css: `.section-nav {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  width: min(640px, 100%);
+  height: 330px;
+  overflow: hidden;
+  border: 1px solid #d3dbe6;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.toc {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 18px 12px;
+  border-right: 1px solid #d3dbe6;
+  background: #f7f9fb;
+}
+
+.toc-title { margin: 0 8px 8px; color: #55657c; font-size: 12px; font-weight: 600; }
+
+.toc a {
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: #55657c;
+  font-size: 14px;
+  text-decoration: none;
+}
+.toc a:hover { background: #edf1f5; color: #14233b; }
+.toc a.is-active { background: #e6f7f3; color: #07605c; font-weight: 600; }
+.toc a:focus-visible { outline: 3px solid #0a7a75; outline-offset: 2px; }
+
+.section-scroll {
+  position: relative;
+  overflow-y: auto;
+  padding: 18px 20px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: #c4cfdd transparent;
+}
+.section-scroll::-webkit-scrollbar { width: 8px; }
+.section-scroll::-webkit-scrollbar-thumb { background: #c4cfdd; border-radius: 999px; }
+.section-scroll:focus-visible { outline: 3px solid #0a7a75; outline-offset: -3px; }
+
+.section-scroll section { padding: 4px 0 20px; }
+.section-scroll section + section { border-top: 1px solid #edf1f5; padding-top: 18px; }
+.section-scroll h3 { margin: 0 0 8px; font-size: 17px; }
+.section-scroll p { margin: 0 0 10px; color: #55657c; font-size: 14px; line-height: 1.6; }
+.section-scroll p:last-child { margin-bottom: 0; }
+
+@media (max-width: 520px) {
+  .section-nav { grid-template-columns: 122px minmax(0, 1fr); height: 310px; }
+  .toc { padding: 14px 8px; }
+  .toc a { padding: 7px 8px; font-size: 13px; }
+  .section-scroll { padding: 16px; }
+}`,
+    js: `const scroller = document.getElementById('section-scroll');
+const links = Array.from(document.querySelectorAll('.toc a'));
+const sections = links.map((link) => document.querySelector(link.getAttribute('href')));
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function markActive(target) {
+  links.forEach((link) => {
+    const active = link.getAttribute('href') === '#' + target.id;
+    link.classList.toggle('is-active', active);
+    if (active) link.setAttribute('aria-current', 'true');
+    else link.removeAttribute('aria-current');
+  });
+}
+
+function updateSpy() {
+  if (scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 2) {
+    markActive(sections[sections.length - 1]);
+    return;
+  }
+
+  const marker = scroller.scrollTop + 24;
+  let current = sections[0];
+  sections.forEach((section) => {
+    if (section.offsetTop <= marker) current = section;
+  });
+  markActive(current);
+}
+
+links.forEach((link) => {
+  link.addEventListener('click', (event) => {
+    event.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    scroller.scrollTo({
+      top: target.offsetTop,
+      behavior: reduced.matches ? 'auto' : 'smooth'
+    });
+    markActive(target);
+  });
+});
+
+scroller.addEventListener('scroll', updateSpy, { passive: true });
+updateSpy();`
+  },
+
+  {
+    id: 'menu-dropdown',
+    title: 'Menu with dropdown',
+    category: 'Navigation',
+    description: 'A shop navigation bar with an accessible dropdown, keyboard arrow support and a featured product link.',
+    height: 340,
+    layout: 'top',
+    html: `<header class="mega">
+  <a class="mega-brand" href="#">Northwind</a>
+
+  <nav class="mega-links" aria-label="Main">
+    <div class="dropdown">
+      <button class="dropdown-toggle" id="shop-toggle" type="button" aria-expanded="false" aria-controls="shop-menu">
+        Shop
+        <svg class="chevron" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m4 6 4 4 4-4"></path>
+        </svg>
+      </button>
+
+      <div class="dropdown-panel" id="shop-menu" role="group" aria-label="Shop menu" hidden>
+        <div class="dropdown-group">
+          <p class="dropdown-heading">Coffee</p>
+          <a href="#">Whole bean</a>
+          <a href="#">Cold brew</a>
+          <a href="#">Subscriptions</a>
+        </div>
+        <div class="dropdown-group">
+          <p class="dropdown-heading">Gear</p>
+          <a href="#">Brewers</a>
+          <a href="#">Grinders</a>
+          <a href="#">Cups and mugs</a>
+        </div>
+        <a class="dropdown-feature" href="#">
+          <img src="assets/Ice-Americano.jpg" alt="" width="52" height="52">
+          <span class="dropdown-feature-text">
+            <strong>Iced Americano</strong>
+            <span>Best seller · $4.50</span>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <a href="#">Journal</a>
+    <a href="#">About</a>
+  </nav>
+
+  <a class="mega-cart" href="#" aria-label="Bag, 2 items">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M6 8h12l-1 12H7L6 8Z"></path>
+      <path d="M9 8V6a3 3 0 0 1 6 0v2"></path>
+    </svg>
+    <span>Bag</span>
+    <span class="mega-count" aria-hidden="true">2</span>
+  </a>
+</header>`,
+    css: `.mega {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  height: 64px;
+  padding: 0 24px;
+  border-bottom: 1px solid #d3dbe6;
+  background: #fff;
+}
+
+.mega-brand { color: #14233b; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; text-decoration: none; }
+
+.mega-links { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+
+.dropdown { position: static; }
+
+.dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #14233b;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.dropdown-toggle:hover,
+.dropdown-toggle[aria-expanded="true"] { background: #edf1f5; }
+
+.chevron { transition: transform 0.16s; }
+.dropdown-toggle[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+
+.mega-links > a {
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #14233b;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.mega-links > a:hover { background: #edf1f5; }
+
+.mega a:focus-visible,
+.dropdown-toggle:focus-visible { outline: 3px solid #0a7a75; outline-offset: 2px; }
+
+.dropdown-panel {
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 24px;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 22px;
+  width: min(440px, calc(100% - 48px));
+  padding: 18px;
+  border: 1px solid #d3dbe6;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 18px 40px rgba(20, 35, 59, 0.16);
+  animation: menu-in 0.16s ease-out;
+}
+.dropdown-panel[hidden] { display: none; }
+
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-group { display: grid; align-content: start; gap: 2px; }
+.dropdown-heading { margin: 0 0 4px 8px; color: #55657c; font-size: 12px; font-weight: 600; }
+
+.dropdown-group a {
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: #14233b;
+  font-size: 14px;
+  text-decoration: none;
+}
+.dropdown-group a:hover { background: #edf1f5; }
+
+.dropdown-feature {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  padding: 8px;
+  border-radius: 10px;
+  background: #fbf8f4;
+  color: #14233b;
+  text-decoration: none;
+}
+.dropdown-feature:hover { background: #f4ede4; }
+.dropdown-feature img { width: 52px; height: 52px; object-fit: cover; border-radius: 8px; mix-blend-mode: multiply; }
+.dropdown-feature-text { display: grid; gap: 2px; }
+.dropdown-feature-text strong { font-size: 13px; }
+.dropdown-feature-text span { color: #55657c; font-size: 12px; }
+
+.mega-cart {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: #14233b;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.mega-cart:hover { background: #edf1f5; }
+
+.mega-count {
+  display: grid;
+  place-items: center;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #0a7a75;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+@media (max-width: 620px) {
+  .mega { height: 60px; padding: 0 16px; gap: 10px; }
+  .mega-brand { font-size: 18px; }
+  .mega-links > a { display: none; }
+  .mega-cart span:not(.mega-count) { display: none; }
+  .mega-cart { padding: 8px; }
+  .dropdown-panel { left: 16px; width: min(440px, calc(100% - 32px)); padding: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron,
+  .dropdown-panel { animation: none; transition: none; }
+}`,
+    js: `const toggle = document.getElementById('shop-toggle');
+const panel = document.getElementById('shop-menu');
+const dropdown = document.querySelector('.dropdown');
+const links = Array.from(panel.querySelectorAll('a'));
+
+function openMenu(focusFirst) {
+  panel.hidden = false;
+  toggle.setAttribute('aria-expanded', 'true');
+  if (focusFirst) links[0].focus();
+}
+
+function closeMenu(returnFocus) {
+  if (panel.hidden) return;
+  panel.hidden = true;
+  toggle.setAttribute('aria-expanded', 'false');
+  if (returnFocus) toggle.focus();
+}
+
+toggle.addEventListener('click', () => {
+  if (panel.hidden) openMenu(false);
+  else closeMenu(false);
+});
+
+toggle.addEventListener('keydown', (event) => {
+  if (event.key === 'ArrowDown') {
+    event.preventDefault();
+    openMenu(true);
+  }
+});
+
+panel.addEventListener('keydown', (event) => {
+  const index = links.indexOf(document.activeElement);
+
+  if (event.key === 'ArrowDown') {
+    event.preventDefault();
+    links[(index + 1) % links.length].focus();
+  }
+  if (event.key === 'ArrowUp') {
+    event.preventDefault();
+    links[(index - 1 + links.length) % links.length].focus();
+  }
+  if (event.key === 'Home') {
+    event.preventDefault();
+    links[0].focus();
+  }
+  if (event.key === 'End') {
+    event.preventDefault();
+    links[links.length - 1].focus();
+  }
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    closeMenu(true);
+  }
+});
+
+links.forEach((link) => {
+  link.addEventListener('click', () => closeMenu(true));
+});
+
+document.addEventListener('click', (event) => {
+  if (!dropdown.contains(event.target)) closeMenu(false);
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !panel.hidden) closeMenu(true);
+});`
+  },
+
+  {
+    id: 'bottom-navigation',
+    title: 'Bottom navigation',
+    category: 'Navigation',
+    description: 'A compact bottom tab bar with icons, labels and a live screen title that updates with the selected tab.',
+    height: 300,
+    html: `<div class="dock-demo">
+  <div class="dock-screen" aria-live="polite" aria-atomic="true">
+    <h3 id="dock-title">Your morning order</h3>
+    <p id="dock-copy">Iced Americano, ready in 4 minutes.</p>
+  </div>
+
+  <nav class="dock" aria-label="Primary">
+    <button class="dock-link is-active" type="button" aria-current="page" data-title="Your morning order" data-copy="Iced Americano, ready in 4 minutes.">
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"></path>
+      </svg>
+      <span>Home</span>
+    </button>
+    <button class="dock-link" type="button" data-title="Find a drink" data-copy="Search the menu by name or roast.">
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="6"></circle>
+        <path d="m16 16 4 4"></path>
+      </svg>
+      <span>Search</span>
+    </button>
+    <button class="dock-link" type="button" data-title="Order history" data-copy="Two orders from this week.">
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"></path>
+        <path d="M9 8h6M9 12h6"></path>
+      </svg>
+      <span>Orders</span>
+    </button>
+    <button class="dock-link" type="button" data-title="Your account" data-copy="Manage payment and pickup details.">
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="8" r="3.5"></circle>
+        <path d="M5 20a7 7 0 0 1 14 0"></path>
+      </svg>
+      <span>Account</span>
+    </button>
+  </nav>
+</div>`,
+    css: `.dock-demo { display: grid; gap: 14px; width: min(420px, 100%); }
+
+.dock-screen {
+  min-height: 110px;
+  padding: 20px;
+  border: 1px solid #d3dbe6;
+  border-radius: 16px;
+  background: #fff;
+}
+.dock-screen h3 { margin: 0; font-size: 18px; }
+.dock-screen p { margin: 6px 0 0; color: #55657c; font-size: 14px; line-height: 1.5; }
+
+.dock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 6px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(20, 35, 59, 0.16);
+}
+
+.dock-link {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #55657c;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.dock-link:hover { background: #f2f5f8; color: #14233b; }
+.dock-link.is-active { background: #e6f7f3; color: #07605c; }
+.dock-link:focus-visible { outline: 3px solid #0a7a75; outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dock-link { transition: none; }
+}`,
+    js: `const tabs = Array.from(document.querySelectorAll('.dock-link'));
+const title = document.getElementById('dock-title');
+const copy = document.getElementById('dock-copy');
+
+tabs.forEach((tab) => {
+  tab.addEventListener('click', () => {
+    tabs.forEach((item) => {
+      const active = item === tab;
+      item.classList.toggle('is-active', active);
+      if (active) item.setAttribute('aria-current', 'page');
+      else item.removeAttribute('aria-current');
+    });
+    title.textContent = tab.dataset.title;
+    copy.textContent = tab.dataset.copy;
+  });
+});`
+  },
+
+  {
+    id: 'checkout-stepper',
+    title: 'Checkout stepper',
+    category: 'Navigation',
+    description: 'A three-step checkout progress bar with completed steps, a current step and working back and next actions.',
+    height: 350,
+    html: `<div class="stepper">
+  <ol class="steps" id="steps" aria-label="Checkout progress">
+    <li>
+      <button class="step" type="button" data-step="1">
+        <span class="step-dot">
+          <span class="step-number">1</span>
+          <svg class="step-check" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m3 8 3 3 7-7"></path>
+          </svg>
+        </span>
+        <span class="step-label">Cart</span>
+      </button>
+    </li>
+    <li>
+      <button class="step" type="button" data-step="2">
+        <span class="step-dot">
+          <span class="step-number">2</span>
+          <svg class="step-check" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m3 8 3 3 7-7"></path>
+          </svg>
+        </span>
+        <span class="step-label">Details</span>
+      </button>
+    </li>
+    <li>
+      <button class="step" type="button" data-step="3">
+        <span class="step-dot">
+          <span class="step-number">3</span>
+          <svg class="step-check" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m3 8 3 3 7-7"></path>
+          </svg>
+        </span>
+        <span class="step-label">Payment</span>
+      </button>
+    </li>
+  </ol>
+
+  <div class="step-panel">
+    <div aria-live="polite">
+      <h3 id="step-title">Contact details</h3>
+      <p id="step-copy">We will send your receipt and pickup updates here.</p>
+    </div>
+    <div class="step-actions">
+      <button class="step-back" id="step-back" type="button">Back</button>
+      <button class="step-next" id="step-next" type="button">Continue to payment</button>
+    </div>
+  </div>
+</div>`,
+    css: `.stepper {
+  width: min(460px, 100%);
+  padding: 24px;
+  border: 1px solid #d3dbe6;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.steps { position: relative; display: flex; margin: 0 0 24px; padding: 0; list-style: none; }
+
+.steps::before,
+.steps::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 16.66%;
+  height: 2px;
+  background: #d3dbe6;
+}
+.steps::before { right: 16.66%; }
+.steps::after {
+  width: 66.66%;
+  background: #0a7a75;
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.steps li { display: flex; flex: 1; justify-content: center; }
+
+.step {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #55657c;
+  cursor: pointer;
+}
+.step:disabled { cursor: not-allowed; }
+
+.step-dot {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid #d3dbe6;
+  border-radius: 50%;
+  background: #fff;
+  color: #55657c;
+  font-size: 12px;
+  font-weight: 700;
+}
+.step-check { display: none; }
+.step-label { font-size: 12px; font-weight: 600; }
+
+.step:hover:not(:disabled) .step-dot { border-color: #0a7a75; color: #0a7a75; }
+.step.is-current .step-dot { border-color: #0a7a75; background: #0a7a75; color: #fff; }
+.step.is-current .step-label { color: #14233b; }
+.step.is-complete .step-dot { border-color: #0a7a75; background: #e6f7f3; color: #07605c; }
+.step.is-complete .step-number { display: none; }
+.step.is-complete .step-check { display: block; }
+.step.is-complete .step-label { color: #07605c; }
+.step:disabled .step-dot { opacity: 0.55; }
+.step:focus-visible { border-radius: 6px; outline: 3px solid #0a7a75; outline-offset: 3px; }
+
+.step-panel h3 { margin: 0; font-size: 18px; }
+.step-panel p { min-height: 44px; margin: 6px 0 0; color: #55657c; font-size: 14px; line-height: 1.55; }
+
+.step-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+
+.step-back,
+.step-next {
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.step-back { border: 1.5px solid #d3dbe6; background: #fff; color: #14233b; }
+.step-back:hover:not(:disabled) { border-color: #14233b; }
+.step-back:disabled { color: #8d9bb0; cursor: not-allowed; }
+.step-next { border: 1.5px solid #0a7a75; background: #0a7a75; color: #fff; }
+.step-next:hover:not(:disabled) { border-color: #07605c; background: #07605c; }
+.step-next:disabled { opacity: 0.65; cursor: default; }
+.step-back:focus-visible,
+.step-next:focus-visible { outline: 3px solid #0a7a75; outline-offset: 2px; }
+
+@media (max-width: 420px) {
+  .stepper { padding: 18px; }
+  .step-actions { flex-direction: column; }
+  .step-back,
+  .step-next { width: 100%; }
+  .step-panel p { min-height: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .steps::after { transition: none; }
+}`,
+    js: `const stepData = [
+  { title: 'Review your bag', copy: 'One iced americano and a bag of whole bean coffee.', next: 'Continue to details' },
+  { title: 'Contact details', copy: 'We will send your receipt and pickup updates here.', next: 'Continue to payment' },
+  { title: 'Payment', copy: 'Pay at pickup or use a saved card.', next: 'Place order' }
+];
+const labels = ['Cart', 'Details', 'Payment'];
+const stepButtons = Array.from(document.querySelectorAll('.step'));
+const stepsEl = document.getElementById('steps');
+const title = document.getElementById('step-title');
+const copy = document.getElementById('step-copy');
+const back = document.getElementById('step-back');
+const next = document.getElementById('step-next');
+let current = 2;
+
+function render() {
+  stepButtons.forEach((button, index) => {
+    const step = index + 1;
+    const completed = step < current;
+    const isCurrent = step === current;
+
+    button.disabled = step > current;
+    button.classList.toggle('is-complete', completed);
+    button.classList.toggle('is-current', isCurrent);
+
+    if (isCurrent) button.setAttribute('aria-current', 'step');
+    else button.removeAttribute('aria-current');
+
+    let label = 'Step ' + step + ': ' + labels[index];
+    if (completed) label += ', completed';
+    if (isCurrent) label += ', current';
+    button.setAttribute('aria-label', label);
+  });
+
+  stepsEl.style.setProperty('--progress', String((current - 1) / 2));
+
+  const data = stepData[current - 1];
+  title.textContent = data.title;
+  copy.textContent = data.copy;
+  next.textContent = data.next;
+  next.disabled = false;
+  back.disabled = current === 1;
+}
+
+stepButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const step = Number(button.dataset.step);
+    if (step <= current) {
+      current = step;
+      render();
+    }
+  });
+});
+
+back.addEventListener('click', () => {
+  if (current > 1) {
+    current -= 1;
+    render();
+  }
+});
+
+next.addEventListener('click', () => {
+  if (current < 3) {
+    current += 1;
+    render();
+  } else {
+    copy.textContent = 'Thanks. Your order will be ready in 4 minutes.';
+    next.textContent = 'Order placed';
+    next.disabled = true;
+    back.focus();
+  }
+});
+
+render();`
   },
 
   /* ------------------------------ Content ------------------------------ */

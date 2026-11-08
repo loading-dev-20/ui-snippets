@@ -6,8 +6,10 @@ Plain HTML, CSS and JavaScript. No build step, no dependencies.
 
 ## What's included
 
-- 29 components across Buttons, Forms, Cards, Navigation, Content and Feedback, including seven button patterns.
-- Live previews in isolated iframes, with HTML, CSS and JavaScript tabs.
+- 37 components across Buttons, Forms, Cards, Navigation, Content and Feedback, including seven button patterns, seven navigation patterns and three ecommerce card patterns.
+- Ecommerce examples: product card with wishlist and size options, sale card and cart line item with quantity and undo.
+- Navigation examples: responsive navbar, breadcrumbs, pagination, a scrollspy section menu, a dropdown shop menu, a bottom tab bar and a checkout stepper.
+- Live previews in sandboxed iframes, with HTML, CSS and JavaScript tabs.
 - Search that matches titles, descriptions, categories and the actual snippet source. Press `/` to jump to the search box.
 - A dark theme that follows your system setting until you pick one, then remembers the choice.
 - Category deep links such as `#forms`, with working browser back and forward.
@@ -21,6 +23,7 @@ ui-snippets/
   css/style.css     Styles for the site itself
   js/snippets.js    The component library (edit this to add components)
   js/app.js         Gallery, search, previews, copy and download
+  assets/           Images used by component previews
   vercel.json       Vercel settings
 ```
 
@@ -72,4 +75,4 @@ Run the commands from inside the `ui-snippets` folder.
 
 ## How the previews work
 
-Each preview is an `iframe` built from the component's own HTML, CSS and JavaScript plus a short base reset (shown in the "Base reset" block on the page). The iframe keeps one component's styles and scripts from affecting the others or the site. The "Copy full page" and "Download .html" buttons produce a complete standalone page from the same pieces. The site's dark theme does not change the previews, so components always appear on the light stage they were designed for.
+Each preview is an `iframe` built from the component's own HTML, CSS and JavaScript plus a short base reset (shown in the "Base reset" block on the page). The iframe keeps one component's styles and scripts from affecting the others or the site. Relative asset paths resolve from the gallery page; when `index.html` is opened directly from disk, previews enable same-origin so local images such as `assets/Ice-Americano.jpg` can load. The "Copy full page" and "Download .html" buttons produce a complete standalone page from the same pieces, so keep the `assets/` folder next to a downloaded snippet if it uses an image. The site's dark theme does not change the previews, so components always appear on the light stage they were designed for.

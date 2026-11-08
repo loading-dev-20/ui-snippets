@@ -211,6 +211,19 @@
     return text.split('\n').map((line) => (line ? pad + line : line)).join('\n');
   }
 
+  // A srcdoc preview resolves relative image URLs against about:srcdoc, so
+  // make them absolute from the gallery page. No <base> is injected, so other
+  // relative links keep their normal behaviour.
+  function resolvePreviewAssets(html) {
+    return html.replace(/\bsrc="(?![a-z][a-z0-9+.-]*:|\/\/|#)([^"]*)"/gi, (match, src) => {
+      if (!src) return match;
+      const url = new URL(src, document.baseURI).href
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;');
+      return 'src="' + url + '"';
+    });
+  }
+
   // preview = true adds layout rules that only exist to centre the example in the stage
   function buildDocument(snippet, preview) {
     const previewCss = snippet.layout === 'top'
@@ -234,11 +247,24 @@
       '  </style>',
       '</head>',
       '<body>',
-      indent(snippet.html, 2)
+      indent(preview ? resolvePreviewAssets(snippet.html) : snippet.html, 2)
     ];
 
     if (snippet.js) {
       lines.push('', '  <script>', indent(snippet.js, 4), '  </script>');
+    }
+
+    // Placeholder links would otherwise navigate the preview to the gallery.
+    if (preview) {
+      lines.push(
+        '',
+        '  <script>',
+        '    document.addEventListener("click", function (event) {',
+        '      var link = event.target.closest("a");',
+        '      if (link && link.getAttribute("href") === "#") event.preventDefault();',
+        '    });',
+        '  </script>'
+      );
     }
 
     lines.push('</body>', '</html>');
@@ -262,9 +288,15 @@
       el('div', { class: 'actions' }, [copyFull, save])
     ]);
 
+    // Local file previews need same-origin to load relative images. Keep the
+    // stricter sandbox when the gallery is served over HTTP.
+    const sandbox = location.protocol === 'file:'
+      ? 'allow-scripts allow-forms allow-same-origin'
+      : 'allow-scripts allow-forms';
+
     const frame = el('iframe', {
       title: snippet.title + ' preview',
-      sandbox: 'allow-scripts allow-forms',
+      sandbox: sandbox,
       loading: 'lazy'
     });
     frame.style.height = (snippet.height || 240) + 'px';
