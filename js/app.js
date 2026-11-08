@@ -1,6 +1,6 @@
 /* ------------------------------------------------------------------
    UI Snippets: site behaviour
-   Builds the gallery from window.UI_SNIPPETS (see snippets.js).
+   Builds the gallery from window.UI_SNIPPETS (see js/snippets/).
    ------------------------------------------------------------------ */
 (function () {
   'use strict';
