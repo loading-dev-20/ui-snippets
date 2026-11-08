@@ -6,7 +6,7 @@ Plain HTML, CSS and JavaScript. No build step, no dependencies.
 
 ## What's included
 
-- 23 components across Buttons, Forms, Cards, Navigation, Content and Feedback.
+- 29 components across Buttons, Forms, Cards, Navigation, Content and Feedback, including seven button patterns.
 - Live previews in isolated iframes, with HTML, CSS and JavaScript tabs.
 - Search that matches titles, descriptions, categories and the actual snippet source. Press `/` to jump to the search box.
 - A dark theme that follows your system setting until you pick one, then remembers the choice.
